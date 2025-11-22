@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulir Pendaftaran Peserta</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(to bottom right, #d9d9d9, #f3f3f3);
+      margin: 0;
+      padding: 40px;
+    }
+
+    .container {
+      max-width: 800px;
+      background: white;
+      padding: 40px 50px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      margin: auto;
+      background-image: linear-gradient(#f7f7f7, #eaeaea);
+    }
+
+    h2 {
+      text-align: center;
+      color: #2d2d2d;
+      margin-bottom: 10px;
+    }
+
+    p {
+      text-align: center;
+      color: #555;
+      font-size: 14px;
+      margin-bottom: 30px;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-top: 15px;
+      color: #333;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="date"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+      margin-top: 5px;
+      font-size: 14px;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .row > div {
+      flex: 1;
+      min-width: 150px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    button {
+      padding: 10px 25px;
+      font-size: 15px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      color: white;
+      transition: 0.3s;
+    }
+
+    .submit-btn {
+      background-color: #28a745;
+    }
+
+    .reset-btn {
+      background-color: #00a3e0;
+    }
+
+    button:hover {
+      opacity: 0.8;
+      transform: translateY(-2px);
+    }
+
+    .error {
+      color: red;
+      font-size: 13px;
+      margin-top: 3px;
+      display: none;
+    }
+
+    .invalid {
+      border-color: red;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Formulir Pendaftaran Peserta</h2>
+    <p>Isi formulir dengan hati-hati untuk data pendaftaran</p>
+
+    <form id="pendaftaranForm" novalidate>
+      <label>Nama Peserta</label>
+      <div class="row">
+        <div>
+          <input type="text" id="namaDepan" placeholder="Nama Depan">
+          <div class="error" id="errorNamaDepan">Nama depan wajib diisi!</div>
+        </div>
+        <div><input type="text" placeholder="Nama Tengah"></div>
+        <div>
+          <input type="text" id="namaBelakang" placeholder="Nama Belakang">
+          <div class="error" id="errorNamaBelakang">Nama belakang wajib diisi!</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label>Tanggal Lahir</label>
+          <input type="date" id="tglLahir">
+          <div class="error" id="errorTglLahir">Tanggal lahir wajib diisi!</div>
+        </div>
+        <div>
+          <label>Jenis Kelamin</label>
+          <select id="jenisKelamin">
+            <option value="">Please Select</option>
+            <option value="Laki-laki">Laki-laki</option>
+            <option value="Perempuan">Perempuan</option>
+          </select>
+          <div class="error" id="errorJenisKelamin">Pilih jenis kelamin!</div>
+        </div>
+      </div>
+
+      <label>Alamat</label>
+      <input type="text" id="alamat1" placeholder="Alamat Jalan">
+      <div class="error" id="errorAlamat">Alamat wajib diisi!</div>
+
+      <div class="row">
+        <div>
+          <label>E-mail</label>
+          <input type="email" id="email" placeholder="contoh: nama@contoh.com">
+          <div class="error" id="errorEmail">Email wajib diisi dan harus valid!</div>
+        </div>
+        <div>
+          <label>Nomor HP</label>
+          <input type="text" id="noHP" placeholder="(0000) 000-0000">
+          <div class="error" id="errorNoHP">Nomor HP wajib diisi dan hanya angka!</div>
+        </div>
+      </div>
+
+      <label>Kursus yang dipilih</label>
+      <select id="kursus">
+        <option value="">Please Select</option>
+        <option>Desain Grafis</option>
+        <option>Web Development</option>
+        <option>Digital Marketing</option>
+        <option>Microsoft Office</option>
+      </select>
+      <div class="error" id="errorKursus">Pilih salah satu kursus!</div>
+
+      <div class="buttons">
+        <button type="submit" class="submit-btn">Kirim Formulir</button>
+        <button type="reset" class="reset-btn">Bersihkan Formulir</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById("pendaftaranForm");
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      let valid = true;
+
+      // helper function
+      function validateField(idInput, idError, condition, message) {
+        const input = document.getElementById(idInput);
+        const error = document.getElementById(idError);
+        if (condition) {
+          error.textContent = message;
+          error.style.display = "block";
+          input.classList.add("invalid");
+          valid = false;
+        } else {
+          error.style.display = "none";
+          input.classList.remove("invalid");
+        }
+      }
+
+      // ambil semua nilai
+      const namaDepan = document.getElementById("namaDepan").value.trim();
+      const namaBelakang = document.getElementById("namaBelakang").value.trim();
+      const tglLahir = document.getElementById("tglLahir").value.trim();
+      const jenisKelamin = document.getElementById("jenisKelamin").value.trim();
+      const alamat = document.getElementById("alamat1").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const noHP = document.getElementById("noHP").value.trim();
+      const kursus = document.getElementById("kursus").value.trim();
+
+      // validasi
+      validateField("namaDepan", "errorNamaDepan", namaDepan === "", "Nama depan wajib diisi!");
+      validateField("namaBelakang", "errorNamaBelakang", namaBelakang === "", "Nama belakang wajib diisi!");
+      validateField("tglLahir", "errorTglLahir", tglLahir === "", "Tanggal lahir wajib diisi!");
+      validateField("jenisKelamin", "errorJenisKelamin", jenisKelamin === "", "Pilih jenis kelamin!");
+      validateField("alamat1", "errorAlamat", alamat === "", "Alamat wajib diisi!");
+      validateField("email", "errorEmail", email === "" || !email.includes("@"), "Email wajib diisi dan harus valid!");
+      validateField("noHP", "errorNoHP", noHP === "" || !/^[0-9]+$/.test(noHP), "Nomor HP wajib diisi dan hanya angka!");
+      validateField("kursus", "errorKursus", kursus === "", "Pilih salah satu kursus!");
+
+      if (valid) {
+        alert("Formulir berhasil dikirim!");
+        form.reset();
+        document.querySelectorAll(".error").forEach(e => e.style.display = "none");
+        document.querySelectorAll("input, select").forEach(el => el.classList.remove("invalid"));
+      }
+    });
+
+    // Hilangkan error saat user mengetik
+    document.querySelectorAll("input, select").forEach(el => {
+      el.addEventListener("input", () => {
+        el.classList.remove("invalid");
+        const nextError = el.nextElementSibling;
+        if (nextError && nextError.classList.contains("error")) {
+          nextError.style.display = "none";
+        }
+      });
+    });
+  </script>
+</body>
+</html>
